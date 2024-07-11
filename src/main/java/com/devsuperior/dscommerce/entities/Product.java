@@ -8,6 +8,7 @@ import java.util.Set;
 @Table(name="tb_product")
 public class Product {
 
+    //attributes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,6 +18,7 @@ public class Product {
     private double price;
     private String imgUrl;
 
+    //relationships
     //within class Product, i reference the categories collection . 'categories' is name inside the project.
     //'Set<>' is because dont can repeat 'id' Product and 'id' Category'.
     @ManyToMany
@@ -41,6 +43,7 @@ public class Product {
         this.imgUrl = imgUrl;
     }
 
+    //get and set
     public Long getId() {
         return id;
     }
