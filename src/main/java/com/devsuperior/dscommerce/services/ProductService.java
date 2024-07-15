@@ -61,5 +61,10 @@ public class ProductService {
         entity.setImgUrl(dto.getImgUrl());
     }
 
+    //method to delete product, is void, don't have return. delete code 204 no content
+    @Transactional
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
 }
 

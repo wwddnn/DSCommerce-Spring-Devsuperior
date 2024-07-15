@@ -55,4 +55,11 @@ public class ProductController {
         dto = service.update(id, dto);
         return ResponseEntity.ok(dto);
     }
+
+    //delete code return 204 no content.
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
