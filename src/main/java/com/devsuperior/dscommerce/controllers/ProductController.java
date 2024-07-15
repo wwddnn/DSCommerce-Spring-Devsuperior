@@ -4,7 +4,11 @@ import com.devsuperior.dscommerce.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 //controller implements the resources
 //controller that respond on route '/products'
@@ -21,23 +25,28 @@ public class ProductController {
     //this '/{id}' is for received several parameter on the route
     //pathvariable received several id on the route
     //findById() is the same method in class ProductService
+    //ResponseEntity customize the response 200
     @GetMapping(value = "/{id}")
-    public ProductDTO findById(@PathVariable Long id) {
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
         ProductDTO dto = service.findById(id);
-        return dto;
+        return ResponseEntity.ok(dto);
     }
 
     //pageable to view products by pages
     //findAll() is the same method in class ProductService
     @GetMapping
-    public Page<ProductDTO> findAll(Pageable pageable) {
-        return service.findAll(pageable);
+    public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable) {
+        Page<ProductDTO> dto = service.findAll(pageable);
+        return ResponseEntity.ok(dto);
     }
 
     //insert() method is a post method, and go save on database the body inserted on postman
     //@RequestBody is annotation to insert data on the body of request
+    //instantiate object URI, is the good practice. the response come with code 201 and resource link
     @PostMapping
-    public ProductDTO insert(@RequestBody ProductDTO dto) {
-        return service.insert(dto);
+    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {
+        dto = service.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 }
