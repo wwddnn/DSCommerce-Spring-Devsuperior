@@ -21,10 +21,10 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
+    //method findById
     //method for return product dto.
     //this '/{id}' is for received several parameter on the route
     //pathvariable received several id on the route
-    //findById() is the same method in class ProductService
     //ResponseEntity customize the response 200
     @GetMapping(value = "/{id}")
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
@@ -32,14 +32,16 @@ public class ProductController {
         return ResponseEntity.ok(dto);
     }
 
-    //pageable to view products by pages
-    //findAll() is the same method in class ProductService
+    //method findAll
+    //Pageable and Page, go to view products by pages
+    //Pageable have import springframework data domain
     @GetMapping
     public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable) {
         Page<ProductDTO> dto = service.findAll(pageable);
         return ResponseEntity.ok(dto);
     }
 
+    //method insert
     //insert() method is a post method, and go save on database the body inserted on postman
     //@RequestBody is annotation to insert data on the body of request
     //instantiate object URI, is the good practice. the response come with code 201 and resource link
@@ -50,13 +52,15 @@ public class ProductController {
         return ResponseEntity.created(uri).body(dto);
     }
 
+    //method update
     @PutMapping(value = "/{id}")
     public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok(dto);
     }
 
-    //delete code return 204 no content.
+    //method delete
+    //delete code return ''204 no content'', because don't have body.
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);

@@ -19,7 +19,7 @@ public class ProductService {
 
     //findById method to search products on database for id
     //only ready operation in database(don't lock in database)
-    //first search product through id, after handle this product and save one variable, after convert this product in one product dto.
+    //first search product through id in database, after handle this product and save one variable, after convert this product in one product dto.
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
             Optional<Product> result = repository.findById(id);
@@ -31,13 +31,15 @@ public class ProductService {
     //findAll method to search all products on database
     //first search all products, after put them pageable and save on Page list, and after transform this list in one list ProductDTO.
     //obs. page is a stream. only user map() in this case, don't need use stream() here.
+    //Pageable have import springframework data domain
     @Transactional(readOnly = true)
     public Page<ProductDTO> findAll(Pageable pageable) {
             Page<Product> result = repository.findAll(pageable);
             return result.map(x -> new ProductDTO(x));
     }
 
-    //this method will be saved the new product on database. read only don't have here more.
+    //this method will be saved the new product on database. 'read only' don't have here more.
+    //copyDtoToEntity is method to copy dto for entity
     @Transactional
     public ProductDTO insert(ProductDTO dto) {
         Product entity = new Product();
@@ -46,6 +48,8 @@ public class ProductService {
         return new ProductDTO(entity);
     }
 
+    //getReferencebyId() this operation don't go on database
+    //copyDtoToEntity is method to copy dto for entity
     @Transactional
     public ProductDTO update(Long id,  ProductDTO dto) {
         Product entity = repository.getReferenceById(id);
@@ -54,17 +58,21 @@ public class ProductService {
         return new ProductDTO(entity);
     }
 
+    //method to delete
+    // is void, don't have return. delete code 204 no content
+    @Transactional
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
+    //create method for copy dto to entity
     private void copyDtoToEntity(ProductDTO dto, Product entity) {
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
     }
-
-    //method to delete product, is void, don't have return. delete code 204 no content
-    @Transactional
-    public void delete(Long id) {
-        repository.deleteById(id);
-    }
 }
+
+
 
