@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 //no JPA here! dto don't have connection with JPA.
+//validation put here always in DTO, in this case, ProductDTO class, because is DTO go traffic via web.
 public class ProductDTO {
     private Long id;
     @Size(min = 3, max = 80, message = "Nome precisa ter de 3 a 80 caracteres")
@@ -17,11 +18,7 @@ public class ProductDTO {
     private Double price;
     private String imgUrl;
 
-    //constructors
-    public ProductDTO() {
-
-    }
-
+    //constructors. don't have constructor without arguments
     public ProductDTO(Long id, String name, String description, Double price, String imgUrl) {
         this.id = id;
         this.name = name;
@@ -38,7 +35,7 @@ public class ProductDTO {
         imgUrl = entity.getImgUrl();
     }
 
-    //only get methods
+    //only get methods, because is dto, don't have set method.
     public Long getId() {
         return id;
     }

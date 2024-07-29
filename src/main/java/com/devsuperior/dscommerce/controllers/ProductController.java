@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 
 //controller implements the resources
@@ -46,7 +45,7 @@ public class ProductController {
     //insert() method is a post method, and go save on database the body inserted on postman
     //@RequestBody is annotation to insert data on the body of request
     //instantiate object URI, is the good practice. the response come with code 201 and resource link
-    //@Valid this annotation take valid the body. come before @RequestBody
+    //@Valid take the body validation that is a dto come json. this annotation come to Bean Validation in ProductDTO.
     @PostMapping
     public ResponseEntity<ProductDTO> insert( @Valid @RequestBody ProductDTO dto) {
         dto = service.insert(dto);

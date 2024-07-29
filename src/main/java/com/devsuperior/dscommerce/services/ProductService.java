@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-//implement the search on database, with dependency ProductRepository
+//implement the search on database, with dependency ProductRepository.
+//the layer service is responsible for throw yours own exceptions.
 @Service
 public class ProductService {
 
@@ -22,10 +23,9 @@ public class ProductService {
     private ProductRepository repository;
 
     //findById method to search products on database for id
-    //only ready operation in database(don't lock in database)
-    //first search product through id in database, after handle this product and save one variable, after convert this product in one product dto.
+    // 'readOnly' only ready operation in database(don't lock in database)
     //findById have method of optional, that throw exception
-    //orElseThrow() throw exception case don't find object
+    // orElseThrow() throw exception case don't find object
     //this Service layer is responsible that throw the own exceptions.
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id) {
@@ -37,15 +37,16 @@ public class ProductService {
     //findAll method to search all products on database
     //first search all products, after put them pageable and save on Page list, and after transform this list in one list ProductDTO.
     //obs. page is a stream. only user map() in this case, don't need use stream() here.
-    //Pageable have import springframework data domain
+    // Pageable have import springframework data domain
     @Transactional(readOnly = true)
     public Page<ProductDTO> findAll(Pageable pageable) {
             Page<Product> result = repository.findAll(pageable);
             return result.map(x -> new ProductDTO(x));
     }
 
-    //this method will be saved the new product on database. 'read only' don't have here more.
-    //copyDtoToEntity is method to copy dto for entity
+    //this method will be saved the new product on database.
+    // 'read only' don't have here more.
+    // copyDtoToEntity is method to copy dto for entity
     @Transactional
     public ProductDTO insert(ProductDTO dto) {
         Product entity = new Product();
@@ -55,7 +56,7 @@ public class ProductService {
     }
 
     //getReferencebyId() this operation don't go on database
-    //copyDtoToEntity is method to copy dto for entity
+    // copyDtoToEntity is method to copy dto for entity
     @Transactional
     public ProductDTO update(Long id,  ProductDTO dto) {
         try {
@@ -70,7 +71,8 @@ public class ProductService {
     }
 
     //method delete
-    // is void, don't have return. delete code 204 no content
+    //is void, don't have return.
+    // delete code 204 no content
     @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
         if (!repository.existsById(id)) {

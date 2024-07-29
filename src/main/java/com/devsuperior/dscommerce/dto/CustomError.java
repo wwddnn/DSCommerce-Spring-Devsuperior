@@ -1,7 +1,7 @@
 package com.devsuperior.dscommerce.dto;
 import java.time.Instant;
 
-//this object go correspond the format error json (postman with attributes: timestamp, status, error, path)
+//this object goes correspond the error in format json (like postman with attributes: timestamp, status, error, path)
 public class CustomError {
 
     //attributes

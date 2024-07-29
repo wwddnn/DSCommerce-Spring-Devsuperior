@@ -13,10 +13,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.Instant;
 
 //global treatments for exceptions
+//we used handlers inside class controllers, so we don't need to use  try catch block  in controller class.
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
     //this method intercept exception ResourceNotFoundException
+    //NOT_FOUND is 404.
+    // status.value() go pass numeric to integer.
+    //request.getRequestURI() go handle to path of URI.
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<CustomError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
@@ -24,6 +28,7 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
+    //BAD_REQUEST is 400
     @ExceptionHandler(DatabaseException.class)
     public ResponseEntity<CustomError> database(DatabaseException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
