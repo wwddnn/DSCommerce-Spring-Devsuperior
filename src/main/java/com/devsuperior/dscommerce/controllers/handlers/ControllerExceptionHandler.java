@@ -36,6 +36,8 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
+    // UNPROCESSABLE_ENTITY is 422
+    //getFieldErrors() cycle through all errors
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<CustomError> methodArgumentNotValidation(MethodArgumentNotValidException e, HttpServletRequest request) {
             HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;

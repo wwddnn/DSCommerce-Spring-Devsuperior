@@ -8,12 +8,12 @@ public class ValidationError extends CustomError {
 
     private List<FieldMessage> errors = new ArrayList<>();
 
-    //constructor
+    //constructor with arguments, and super
     public ValidationError(Instant timestamp, Integer status, String error, String path) {
         super(timestamp, status, error, path);
     }
 
-    //get method
+    //get method for the List
     public List<FieldMessage> getErrors() {
         return errors;
     }
